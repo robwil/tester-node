@@ -37,7 +37,11 @@ app.get('/users/:id', function(req, res) {
 
 http.createServer(app).listen(app.get('port'), function(){
 	console.log('Express server listening on port ' + app.get('port'));
-	MongoClient.connect('mongodb://127.0.0.1:27017/rails_tester_development', function(err, _db) {
+	var mongoUri = 'mongodb://127.0.0.1:27017/rails_tester_development';
+	if (process.env.MONGOHQ_URL) {
+		mongoUri = process.env.MONGOHQ_URL;
+	}
+	MongoClient.connect(mongoUri, function(err, _db) {
 		if(err) throw err;
 		db = _db;
 		console.log("Mongodb connection established");
